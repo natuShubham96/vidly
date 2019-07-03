@@ -6,6 +6,7 @@ import Rentals from "./components/rentals";
 import NavBar from "./components/common/navBar";
 import NotFound from "./components/common/notFound";
 import LinkClick from "./components/common/linkClick";
+import LoginForm from "./components/common/loginForm";
 
 class App extends Component {
   render() {
@@ -13,6 +14,7 @@ class App extends Component {
       <div>
         <NavBar />
         <Switch>
+          <Route path="/login" component={LoginForm} />
           <Route path="/movies/:id" component={LinkClick} />
           <Route path="/movies" component={Movies} />
           <Route path="/customers" component={Customers} />
