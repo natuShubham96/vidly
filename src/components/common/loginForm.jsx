@@ -1,6 +1,9 @@
-import React, { Component } from "react";
+import React, {Component} from 'react';
 
 class LoginForm extends Component {
+  state = {
+    account: {username: '', password: ''},
+  };
   username = React.createRef();
 
   //   componentDidMount() {
@@ -12,8 +15,15 @@ class LoginForm extends Component {
 
     //call server
     const userName = this.username.current.value;
-    console.log("Submitted", userName);
+    console.log('Submitted', userName);
   };
+
+  handleChange = ({currentTarget: input}) => {
+    const account = {...this.state.account};
+    account[input.name] = input.value;
+    this.setState({account});
+  };
+
   render() {
     return (
       <div>
@@ -23,6 +33,9 @@ class LoginForm extends Component {
             <label for="username">Username</label>
             <input
               autoFocus
+              name="username"
+              value={this.state.account.username}
+              onChange={this.handleChange}
               ref={this.username}
               type="text"
               className="form-control"
@@ -34,6 +47,9 @@ class LoginForm extends Component {
             <label for="password">Password</label>
             <input
               type="password"
+              name="password"
+              value={this.state.account.password}
+              onChange={this.handleChange}
               className="form-control"
               id="password"
               aria-describedby="passwordHelp"
