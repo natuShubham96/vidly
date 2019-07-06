@@ -3,6 +3,7 @@ import Input from './input';
 class LoginForm extends Component {
   state = {
     account: {username: '', password: ''},
+    errors: {},
   };
   username = React.createRef();
 
@@ -10,12 +11,30 @@ class LoginForm extends Component {
   //     this.username.current.focus();
   //   }
 
+  validate = () => {
+    const errors = {};
+
+    const {username, password} = this.state.account;
+    if (username.trim() === '') errors.username = 'Username is required.';
+    if (password.trim() === '') errors.password = 'Password is required.';
+
+    // if (errors === {}) return null;
+    // else return errors;
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
+
   handleSubmit = e => {
     e.preventDefault();
 
+    const errors = this.validate();
+    console.log(errors);
+    this.setState({errors});
+
+    if (errors) return;
     //call server
-    const userName = this.username.current.value;
-    console.log('Submitted', userName);
+    //const userName = this.username.current.value;
+    console.log('Submitted');
   };
 
   handleChange = ({currentTarget: input}) => {
@@ -49,7 +68,7 @@ class LoginForm extends Component {
             id="password"
             aria="passwordHelp"
           />
-          <button className="btn btn-primary">Submit</button>
+          <button className="btn btn-primary">Login</button>
         </form>
       </div>
     );
