@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import Input from './input';
 class LoginForm extends Component {
   state = {
     account: {username: '', password: ''},
@@ -29,32 +29,26 @@ class LoginForm extends Component {
       <div>
         <h1>LOGIN</h1>
         <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label for="username">Username</label>
-            <input
-              autoFocus
-              name="username"
-              value={this.state.account.username}
-              onChange={this.handleChange}
-              ref={this.username}
-              type="text"
-              className="form-control"
-              id="username"
-              aria-describedby="emailHelp"
-            />
-          </div>
-          <div className="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={this.state.account.password}
-              onChange={this.handleChange}
-              className="form-control"
-              id="password"
-              aria-describedby="passwordHelp"
-            />
-          </div>
+          <Input
+            autoFocus={true}
+            name="username"
+            label="Username"
+            type="text"
+            value={this.state.account.username}
+            onChange={this.handleChange}
+            id="username"
+            aria="emailHelp"
+          />
+          <Input
+            autoFocus={false}
+            name="password"
+            label="Password"
+            type="password"
+            value={this.state.account.password}
+            onChange={this.handleChange}
+            id="password"
+            aria="passwordHelp"
+          />
           <button className="btn btn-primary">Submit</button>
         </form>
       </div>
