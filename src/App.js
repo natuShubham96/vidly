@@ -1,19 +1,21 @@
-import React, { Component } from "react";
-import Movies from "./Movies";
-import { Route, Redirect, Switch } from "react-router-dom";
-import Customers from "./components/customers";
-import Rentals from "./components/rentals";
-import NavBar from "./components/common/navBar";
-import NotFound from "./components/common/notFound";
-import LinkClick from "./components/common/linkClick";
-import LoginForm from "./components/common/loginForm";
+import React, {Component} from 'react';
+import Movies from './Movies';
+import {Route, Redirect, Switch} from 'react-router-dom';
+import Customers from './components/customers';
+import Rentals from './components/rentals';
+import NavBar from './components/common/navBar';
+import NotFound from './components/common/notFound';
+import LinkClick from './components/common/linkClick';
+import LoginForm from './components/common/loginForm';
+import RegisterForm from './components/registerForm';
 
 class App extends Component {
-  render() {
+  render () {
     return (
       <div>
         <NavBar />
         <Switch>
+          <Route path="/register" component={RegisterForm} />
           <Route path="/login" component={LoginForm} />
           <Route path="/movies/:id" component={LinkClick} />
           <Route path="/movies" component={Movies} />
