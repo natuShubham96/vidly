@@ -1,5 +1,5 @@
-import React from "react";
-import { NavLink, Link } from "react-router-dom";
+import React from 'react';
+import {NavLink, Link} from 'react-router-dom';
 
 const NavBar = () => {
   return (
@@ -38,6 +38,11 @@ const NavBar = () => {
           <li className="nav-item">
             <NavLink className="nav-link disabled" to="/login">
               LogIn
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink className="nav-link disabled" to="/login">
+              Register
             </NavLink>
           </li>
         </ul>
