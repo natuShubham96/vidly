@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
-import Joi from 'joi-browser';
-import Input from './input';
+import React, { Component } from "react";
+import Joi from "joi-browser";
+import Input from "./input";
 
 class Form extends Component {
   state = {
-    data: '',
-    errors: '',
+    data: "",
+    errors: ""
   };
   validate = () => {
-    const options = {abortEarly: false};
+    const options = { abortEarly: false };
     const result = Joi.validate(this.state.data, this.schema, options);
 
     const errors = {};
@@ -31,7 +31,7 @@ class Form extends Component {
 
     // return Object.keys(errors).length === 0 ? null : errors;
   };
-  validateProperty = ({name, value}) => {
+  validateProperty = ({ name, value }) => {
     // if (name === 'username') {
     //   if (value === '') return 'Username is required.';
     //   //...
@@ -41,31 +41,31 @@ class Form extends Component {
     //   //...
     // }
 
-    const obj = {[name]: value};
-    const schema = {[name]: this.schema[name]};
-    const {error} = Joi.validate(obj, schema);
+    const obj = { [name]: value };
+    const schema = { [name]: this.schema[name] };
+    const { error } = Joi.validate(obj, schema);
     return error ? error.details[0].message : null;
   };
   handleSubmit = e => {
     e.preventDefault();
 
     const errors = this.validate();
-    this.setState({errors: errors || {}});
+    this.setState({ errors: errors || {} });
 
     if (errors) return;
 
     this.doSubmit();
   };
-  handleChange = ({currentTarget: input}) => {
-    const errors = {...this.state.errors};
+  handleChange = ({ currentTarget: input }) => {
+    const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(input);
 
     if (errorMessage) errors[input.name] = errorMessage;
     else delete errors[input.name];
 
-    const data = {...this.state.data};
+    const data = { ...this.state.data };
     data[input.name] = input.value;
-    this.setState({data, errors});
+    this.setState({ data, errors });
   };
   renderButton = label => {
     return (
@@ -74,8 +74,8 @@ class Form extends Component {
       </button>
     );
   };
-  renderInput = (name, label, id, aria, autoFocus, type = 'text') => {
-    const {data, errors} = this.state;
+  renderInput = (name, label, id, aria, autoFocus, type = "text") => {
+    const { data, errors } = this.state;
     return (
       <Input
         autoFocus={autoFocus}

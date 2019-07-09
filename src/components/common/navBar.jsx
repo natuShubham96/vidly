@@ -1,5 +1,5 @@
-import React from 'react';
-import {NavLink, Link} from 'react-router-dom';
+import React from "react";
+import { NavLink, Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
@@ -8,7 +8,7 @@ const NavBar = () => {
         Vidly
       </Link>
       <button
-        class="navbar-toggler"
+        className="navbar-toggler"
         type="button"
         data-toggle="collapse"
         data-target="#navbarNav"

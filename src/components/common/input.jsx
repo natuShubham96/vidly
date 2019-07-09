@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Input = ({
   name,
@@ -9,11 +9,11 @@ const Input = ({
   id,
   aria,
   autoFocus,
-  error,
+  error
 }) => {
   return (
     <div className="form-group">
-      <label for={name}>{label}</label>
+      <label htmlFor={name}>{label}</label>
       <input
         autoFocus={autoFocus}
         name={name}
