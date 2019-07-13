@@ -1,12 +1,16 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import _ from "lodash";
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import _ from 'lodash';
 
 class TableBody extends Component {
   renderCell = (item, column) => {
-    const toLink = "/movies/" + item._id;
+    const toLink = `/movies/new?title=${item.title}&genre=${
+      item.genre.name
+    }&numberinstock=${item.numberInStock}&dailyRentalRate=${
+      item.dailyRentalRate
+    }`;
     if (column.content) return column.content(item);
-    if (column.path === "title")
+    if (column.path === 'title')
       return <Link to={toLink}>{_.get(item, column.path)}</Link>;
     else return _.get(item, column.path);
   };
@@ -16,7 +20,7 @@ class TableBody extends Component {
   };
 
   render() {
-    const { data, columns } = this.props;
+    const {data, columns} = this.props;
     return (
       <tbody>
         {data.map(item => (
