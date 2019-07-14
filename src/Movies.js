@@ -7,6 +7,7 @@ import ListGroup from './components/common/listGroup';
 import {getGenres} from './services/fakeGenreService';
 import queryString from 'query-string';
 import _ from 'lodash';
+import SearchBox from './components/common/searchBox';
 
 class Movies extends Component {
   state = {
@@ -15,6 +16,7 @@ class Movies extends Component {
     currentPage: 1,
     pageSize: 4,
     itemSize: 0,
+    searchQuery: null,
     genreid: null,
     sortColumn: {path: 'title', order: 'asc'},
   };
@@ -47,11 +49,19 @@ class Movies extends Component {
     size,
     currentPage,
     pageSize,
-    genreid
+    genreid,
+    searchQuery
   ) => {
-    const filteredMovies = genreid
-      ? allMovies.filter (m => m.genre._id === genreid)
-      : allMovies;
+    let filteredMovies = allMovies;
+    if (searchQuery) {
+      filteredMovies = allMovies.filter (m =>
+        m.title.toLowerCase ().startsWith (searchQuery.toLowerCase ())
+      );
+    } else if (genreid) {
+      filteredMovies = genreid
+        ? allMovies.filter (m => m.genre._id === genreid)
+        : allMovies;
+    }
 
     const sortedOrder = _.orderBy (
       filteredMovies,
@@ -85,7 +95,7 @@ class Movies extends Component {
   };
 
   handleFilter = genreid => {
-    this.setState ({genreid, currentPage: 1});
+    this.setState ({genreid, searchQuery: '', currentPage: 1});
   };
 
   handleSort = sortColumn => {
@@ -96,6 +106,10 @@ class Movies extends Component {
     this.props.history.push ('/movies/new');
   };
 
+  handleSearch = query => {
+    this.setState ({searchQuery: query, genreid: null, currentPage: 1});
+  };
+
   render () {
     const {
       itemSize: size,
@@ -104,6 +118,7 @@ class Movies extends Component {
       movies: allMovies,
       genreid,
       sortColumn,
+      searchQuery,
     } = this.state;
 
     const pagedData = this.getPagedData (
@@ -112,7 +127,8 @@ class Movies extends Component {
       size,
       currentPage,
       pageSize,
-      genreid
+      genreid,
+      searchQuery
     );
 
     if (allMovies.length === 0) {
@@ -136,6 +152,7 @@ class Movies extends Component {
               New Movie
             </button>
             <div>There are {size} movies in your database</div>
+            <SearchBox value={searchQuery} onChange={this.handleSearch} />
             <MovieTable
               onSort={this.handleSort}
               movies={pagedData.pagedMovies}
