@@ -3,50 +3,78 @@ import Joi from 'joi-browser';
 import Form from './common/form';
 import queryString from 'query-string';
 import _ from 'lodash';
+import {getGenres} from '../services/fakeGenreService';
+import {getMovie, saveMovie} from '../services/fakeMovieService';
 
 class MovieForm extends Form {
   state = {
-    data: {title: '', genre: '', numberinstock: '', rate: ''},
+    data: {title: '', genreId: '', numberinstock: '', rate: ''},
+    genres: [],
     errors: {},
   };
   schema = {
+    _id: Joi.string(),
     title: Joi.string()
       .required()
       .label('Title'),
-    genre: Joi.string()
+    genreId: Joi.string()
       .required()
       .label('Genre'),
     numberinstock: Joi.number()
       .integer()
       .required()
       .min(0)
+      .max(100)
       .label('Number In Stock'),
     rate: Joi.number()
       .required()
+      .min(0)
       .max(10)
       .label('Daily Rental Rate'),
   };
 
   componentDidMount() {
-    const result = queryString.parse(this.props.location.search);
-    if (!_.isEmpty(result)) {
-      const data = {
-        title: result.title,
-        genre: result.genre,
-        numberinstock: result.numberinstock,
-        rate: result.dailyRentalRate,
-      };
-      this.setState({data});
-    }
+    const genres = getGenres();
+    this.setState({genres});
+
+    const movieId = this.props.match.params.id;
+    if (movieId === 'new') return; //we don't want to populate form with existing movie object
+
+    const movie = getMovie(movieId);
+    if (!movie) return this.props.history.replace('/not-found'); // return is used, to stop rest of the code from executing
+
+    this.setState({data: this.mapToViewModel(movie)});
+    //const result = queryString.parse(this.props.location.search);
+    // if (!_.isEmpty(result)) {
+    //   const data = {
+    //     title: result.title,
+    //     genre: result.genre,
+    //     numberinstock: result.numberinstock,
+    //     rate: result.dailyRentalRate,
+    //   };
+    //   this.setState({data});
+    // }
   }
+
+  mapToViewModel = movie => {
+    return {
+      _id: movie._id,
+      title: movie.title,
+      genreId: movie.genre._id,
+      numberinstock: movie.numberInStock,
+      rate: movie.dailyRentalRate,
+    };
+  };
 
   doSubmit = () => {
     //call server
     //const userName = this.username.current.value;
-    const {title, genre, numberinstock, rate} = this.state.data;
-    this.props.history.push(
-      `/movies?title=${title}&genre=${genre}&numberInStock=${numberinstock}&dailyRentalRate=${rate}`
-    );
+    saveMovie(this.state.data);
+    this.props.history.push('/movies');
+    // const {title, genre, numberinstock, rate} = this.state.data;
+    // this.props.history.push(
+    //   `/movies?title=${title}&genre=${genre}&numberInStock=${numberinstock}&dailyRentalRate=${rate}`
+    //);
   };
 
   render() {
@@ -62,7 +90,7 @@ class MovieForm extends Form {
             true,
             'text'
           )}
-          {this.renderInput('genre', 'Genre', 'genre', 'genreHelp', false)}
+          {this.renderSelect('genreId', 'Genre', this.state.genres)}
           {this.renderInput(
             'numberinstock',
             'Number In Stock',

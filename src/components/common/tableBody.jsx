@@ -4,11 +4,7 @@ import _ from 'lodash';
 
 class TableBody extends Component {
   renderCell = (item, column) => {
-    const toLink = `/movies/new?title=${item.title}&genre=${
-      item.genre.name
-    }&numberinstock=${item.numberInStock}&dailyRentalRate=${
-      item.dailyRentalRate
-    }`;
+    const toLink = `/movies/${item._id}`;
     if (column.content) return column.content(item);
     if (column.path === 'title')
       return <Link to={toLink}>{_.get(item, column.path)}</Link>;
