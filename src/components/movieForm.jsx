@@ -8,7 +8,7 @@ import {getMovie, saveMovie} from '../services/fakeMovieService';
 
 class MovieForm extends Form {
   state = {
-    data: {title: '', genreId: '', numberinstock: '', rate: ''},
+    data: {title: '', genreId: '', numberInStock: '', dailyRentalRate: ''},
     genres: [],
     errors: {},
   };
@@ -20,13 +20,13 @@ class MovieForm extends Form {
     genreId: Joi.string()
       .required()
       .label('Genre'),
-    numberinstock: Joi.number()
+    numberInStock: Joi.number()
       .integer()
       .required()
       .min(0)
       .max(100)
       .label('Number In Stock'),
-    rate: Joi.number()
+    dailyRentalRate: Joi.number()
       .required()
       .min(0)
       .max(10)
@@ -61,8 +61,8 @@ class MovieForm extends Form {
       _id: movie._id,
       title: movie.title,
       genreId: movie.genre._id,
-      numberinstock: movie.numberInStock,
-      rate: movie.dailyRentalRate,
+      numberInStock: movie.numberInStock,
+      dailyRentalRate: movie.dailyRentalRate,
     };
   };
 
@@ -92,7 +92,7 @@ class MovieForm extends Form {
           )}
           {this.renderSelect('genreId', 'Genre', this.state.genres)}
           {this.renderInput(
-            'numberinstock',
+            'numberInStock',
             'Number In Stock',
             'stock',
             'stockeHelp',
@@ -100,7 +100,7 @@ class MovieForm extends Form {
             'number'
           )}
           {this.renderInput(
-            'rate',
+            'dailyRentalRate',
             'Rate',
             'rate',
             'rateHelp',
